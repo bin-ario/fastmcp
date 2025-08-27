@@ -378,6 +378,7 @@ class OAuthProxy(OAuthProvider):
                 grant_types=["authorization_code", "refresh_token"],
                 token_endpoint_auth_method="none",
                 allowed_redirect_uri_patterns=self._allowed_client_redirect_uris,
+                scope=",".join(self.required_scopes),
             )
             logger.debug("Created ProxyDCRClient for unregistered client %s", client_id)
 

@@ -51,6 +51,7 @@ class GitHubProviderSettings(BaseSettings):
     redirect_path: str | None = None
     required_scopes: list[str] | None = None
     timeout_seconds: int | None = None
+    allowed_client_redirect_uris: list[str] | None = None
 
     @field_validator("required_scopes", mode="before")
     @classmethod
@@ -201,6 +202,7 @@ class GitHubProvider(OAuthProxy):
         redirect_path: str | NotSetT = NotSet,
         required_scopes: list[str] | None | NotSetT = NotSet,
         timeout_seconds: int | NotSetT = NotSet,
+        allowed_client_redirect_uris: list[str] | None | NotSetT = NotSet,
     ):
         """Initialize GitHub OAuth provider.
 
@@ -222,6 +224,7 @@ class GitHubProvider(OAuthProxy):
                     "redirect_path": redirect_path,
                     "required_scopes": required_scopes,
                     "timeout_seconds": timeout_seconds,
+                    "allowed_client_redirect_uris": allowed_client_redirect_uris,
                 }.items()
                 if v is not NotSet
             }
@@ -264,6 +267,7 @@ class GitHubProvider(OAuthProxy):
             base_url=base_url_final,
             redirect_path=redirect_path_final,
             issuer_url=base_url_final,  # We act as the issuer for client registration
+            allowed_client_redirect_uris=settings.allowed_client_redirect_uris,
         )
 
         logger.info(
